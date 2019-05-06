@@ -1,2 +1,2 @@
 # samples
-some sample scripts
+some scripts for sample
