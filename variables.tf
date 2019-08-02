@@ -4,10 +4,10 @@ variable "ssh_user" {
 }
 ##AWS Specific Vars
 variable "aws_access_key" {
-  default = "AKIAJCYLKJZT6U33PN5A"
+  default = "AKIA***LKJZ***PN5A"
 }
 variable "aws_secret_key"  {
-  default = "cCVqc5dpwQd4GgHds69ZMUM5uA7QkRq+OstPvXt0"
+  default = "cCVq***wQd4Gg****ZMUM5uA7Qk******PvXt0"
 }
 variable "aws_security_group" {
   default = "ITsw_sg"
