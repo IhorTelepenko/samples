@@ -1,0 +1,26 @@
+apiVersion: v1
+data:
+  avid.key: |
+    #!/bin/bash
+    WORKDIR=/mnt/host
+
+    ft_local=$(awk '$1=="Local:" {flag=1} flag' <<< "$(<$WORKDIR/proc/net/fib_trie)")
+
+    for IF in $(ls $WORKDIR/sys/class/net/); do
+    networks=$(awk '$1=="'$IF'" && $3=="00000000" && $8!="FFFFFFFF" {printf $2 $8 "\n"}' <<< "$(<$WORKDIR/proc/net/route)" )
+    for net_hex in $networks; do
+    net_dec=$(awk '{gsub(/../, "0x& "); printf "%d.%d.%d.%d\n", $4, $3, $2, $1}' <<< $net_hex)
+    mask_dec=$(awk '{gsub(/../, "0x& "); printf "%d.%d.%d.%d\n", $8, $7, $6, $5}' <<< $net_hex)
+    awk '/'$net_dec'/{flag=1} /32 host/{flag=0} flag {a=$2} END {print "'$IF':\t" a "\n\t'$mask_dec'\n"}' <<< "$ft_local"
+    done
+    done
+
+    exit 0
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2020-03-03T21:05:32Z"
+  name: avid.map
+  namespace: default
+  resourceVersion: "669344"
+  selfLink: /api/v1/namespaces/default/configmaps/avid.map
+  uid: 640a9d4e-66e2-410b-9208-912fcedcd3c8

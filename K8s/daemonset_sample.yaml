@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ip-monitor
+  labels:
+    k8s-app: ip-monitor
+spec:
+  selector:
+    matchLabels:
+      name: ip-monitor
+  template:
+    metadata:
+      labels:
+        name: ip-monitor
+    spec:
+      containers:
+      - name: ip-monitor
+        image: busybox
+        securityContext:
+          runAsUser: 1000
+        command: [ "/bin/sh" ]
+        args: [ "-c", "while true; do /mnt/script.sh; sleep 5; done" ]
+
+        volumeMounts:
+        - name: avid-volume
+          mountPath: /mnt
+          readOnly: true
+      volumes:
+      - name: avid-volume
+        configMap:
+          name: avid.map
+          items:
+          - key: avid.key
+            path: script.sh
