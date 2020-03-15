@@ -4,6 +4,8 @@ Kubernetes resource manifest (appliable with `kubectl apply -f`) with next const
 - Script mounted using ConfigMap
 - Script could be modified
 
+-----------------------------------
+
 OPTIONAL POINT:
 - Container runs in unprivileged mode
 - Rewrite config for monitoring host network (withContainerNet and withOut)
